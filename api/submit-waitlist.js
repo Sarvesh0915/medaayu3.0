@@ -22,19 +22,27 @@ export default async function handler(req, res) {
   }
 
   // 1) Confirmation email to the person who joined
+  const firstName = name.trim().split(' ')[0];
   try {
     await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
       subject: "You're on the MedAayu waitlist! 🎉",
       html: `
-        <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;">
-          <h2 style="color:#142330;">Welcome to MedAayu, ${name}!</h2>
-          <p style="color:#333;font-size:15px;line-height:1.5;">
-            Thanks for joining the waitlist. We'll message you on WhatsApp/Email
-            the moment MedAayu goes live, along with early-access details.
-          </p>
-          <p style="color:#888;font-size:13px;">— Team MedAayu</p>
+        <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;color:#333;font-size:15px;line-height:1.6;">
+          <p>Hi ${firstName},</p>
+          <p>Thank you for joining our wishlist! 🎉<br>
+          We've successfully received your details, and you're now on our priority list.</p>
+          <p>As soon as we launch, you'll be among the first to know. We'll keep you updated with:</p>
+          <ul style="padding-left:20px;">
+            <li>Early access to our platform</li>
+            <li>Product updates and new features</li>
+            <li>Exclusive offers and announcements</li>
+          </ul>
+          <p>We're excited to have you with us and can't wait to share what's coming next.</p>
+          <p>If you have any questions, simply reply to this email—we'd love to hear from you.</p>
+          <p>Thank you for your interest!</p>
+          <p>Best regards,<br>The MedAayu Team</p>
         </div>
       `,
     });
