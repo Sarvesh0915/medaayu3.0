@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedAayu — AI-Powered Fall Detection & Family Healthcare, Made in India</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --marigold:#E2921D;
+    --marigold-deep:#B9720F;
+    --teal:#1F5C4F;
+    --teal-light:#2E7C6B;
+    --navy:#142330;
+    --navy-soft:#1C3140;
+    --white:#FFFFFF;
+    --paper:#FBFAF8;
+    --ink:#1B2A33;
+    --ink-soft:#5C6B74;
+    --line:#E7E3DC;
+    --red:#B3402F;
+    --red-bg:#FBE4E1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  h1,h2,h3,.display{font-family:'Fraunces',serif;font-weight:600;letter-spacing:-0.01em;color:var(--navy);}
+  a{color:inherit;text-decoration:none;}
+  img,svg,video{display:block;max-width:100%;}
+  ul{list-style:none;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 28px;}
+  section{padding:96px 0;}
+  @media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important;}}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--teal);margin-bottom:18px;}
+  .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--marigold);}
+  .section-head{max-width:640px;margin:0 auto 56px;text-align:center;}
+  .section-head.left{margin:0 0 48px;text-align:left;}
+  .section-head h2{font-size:clamp(28px,3.4vw,42px);line-height:1.15;}
+  .section-head p{font-size:16.5px;color:var(--ink-soft);margin-top:14px;line-height:1.6;}
+
+  .btn-primary{background:var(--marigold);color:var(--white);padding:16px 30px;border-radius:100px;font-weight:700;font-size:16px;border:none;cursor:pointer;box-shadow:0 10px 24px -8px rgba(226,146,29,0.55);transition:transform .2s ease, box-shadow .2s ease;display:inline-block;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(226,146,29,0.65);}
+  .btn-ghost{padding:16px 26px;border-radius:100px;font-weight:600;font-size:15px;border:1.5px solid var(--line);color:var(--navy);transition:border-color .2s ease, background .2s ease;display:inline-block;}
+  .btn-ghost:hover{border-color:var(--navy);background:var(--paper);}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:60;background:rgba(255,255,255,0.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:22px;color:var(--navy);}
+  .brand-mark{width:38px;height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;}
+  .brand-mark img{width:100%;height:100%;object-fit:cover;}
+  .nav-links{display:flex;gap:30px;font-size:14.5px;font-weight:600;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--navy);}
+  .nav-cta{background:var(--navy);color:var(--white);padding:11px 22px;border-radius:100px;font-weight:600;font-size:14.5px;transition:transform .2s ease, background .2s ease;}
+  .nav-cta:hover{background:var(--teal);transform:translateY(-1px);}
+  @media (max-width:860px){.nav-links{display:none;}}
+
+  /* HERO */
+  .hero{position:relative;padding:80px 0 100px;background:var(--white);overflow:hidden;}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;align-items:center;}
+  .hero h1{font-size:clamp(34px,4.4vw,54px);line-height:1.08;margin-bottom:20px;}
+  .hero h1 em{font-style:italic;color:var(--marigold-deep);}
+  .hero p.lead{font-size:18px;line-height:1.6;color:var(--ink-soft);max-width:480px;margin-bottom:30px;}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:26px;}
+  .micro{font-size:13.5px;color:var(--ink-soft);}
+  .micro strong{color:var(--navy);}
+
+  .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;}
+  .badge-pill{display:flex;align-items:center;gap:7px;background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:8px 14px;font-size:12.5px;font-weight:700;color:var(--navy);}
+  .badge-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);}
+
+  /* PHONE MOCK */
+  .phone{position:relative;margin:0 auto;width:280px;}
+  .phone-frame{background:var(--navy);border-radius:38px;padding:12px;box-shadow:0 40px 70px -30px rgba(20,35,48,0.45);}
+  .phone-screen{background:linear-gradient(180deg,#F4F1EA,var(--white));border-radius:28px;overflow:hidden;aspect-ratio:9/17.5;position:relative;padding:44px 16px 16px;}
+  .mock-greeting{font-size:11px;color:var(--ink-soft);margin-bottom:2px;}
+  .mock-name{font-family:'Fraunces',serif;font-size:17px;color:var(--navy);margin-bottom:16px;}
+  .mock-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin-bottom:10px;box-shadow:0 6px 16px -10px rgba(20,35,48,0.15);opacity:0;animation:fadeUp .6s ease forwards;}
+  .mock-card:nth-of-type(1){animation-delay:.15s;}
+  .mock-card:nth-of-type(2){animation-delay:.35s;}
+  .mock-card .row{display:flex;align-items:center;gap:9px;}
+  .mock-card .dotic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .mock-card .dotic.teal{background:#E4EFEC;color:var(--teal);}
+  .mock-card .dotic.marigold{background:#FBEBD4;color:var(--marigold-deep);}
+  .mock-card .dotic.red{background:var(--red-bg);color:var(--red);}
+  .mock-card .txt{flex:1;}
+  .mock-card .t1{font-size:11.5px;font-weight:700;color:var(--navy);}
+  .mock-card .t2{font-size:10px;color:var(--ink-soft);}
+  .mock-card .check{width:16px;height:16px;border-radius:50%;background:var(--teal);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+  .mock-alert{background:var(--navy);border-radius:14px;padding:13px 14px;margin-top:14px;opacity:0;animation:fadeUp .6s ease forwards;animation-delay:.55s;}
+  .mock-alert .t1{color:var(--white);}
+  .mock-alert .t2{color:#AEBBC4;}
+  .mock-pulse{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .phone-notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:90px;height:22px;background:var(--navy);border-radius:20px;z-index:5;}
+  .phone-float{position:absolute;background:var(--white);border-radius:14px;padding:10px 14px;box-shadow:0 16px 30px -10px rgba(20,35,48,0.25);font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;animation:bob 3.4s ease-in-out infinite;}
+  .phone-float.f1{top:-16px;left:-40px;color:var(--teal);animation-delay:0s;}
+  .phone-float.f2{bottom:-14px;right:-34px;color:var(--marigold-deep);animation-delay:1.7s;}
+  .phone-float .dot{width:8px;height:8px;border-radius:50%;background:currentColor;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+  @media (max-width:520px){.phone-float{display:none;}}
+
+  .icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* STARRED FEATURES */
+  .star-band{background:var(--navy);color:var(--white);}
+  .star-band .section-head h2{color:var(--white);}
+  .star-band .section-head p{color:#AEBBC4;}
+  .star-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .star-card{background:var(--navy-soft);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px 26px;}
+  .star-card .ic{width:48px;height:48px;border-radius:12px;background:var(--marigold);display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--navy);}
+  .star-card .ic .icon{width:24px;height:24px;stroke-width:1.7;}
+  .star-card h3{color:var(--white);font-size:19px;margin-bottom:10px;}
+  .star-card p{color:#AEBBC4;font-size:14.5px;line-height:1.6;}
+  @media (max-width:860px){.star-grid{grid-template-columns:1fr;}}
+
+  /* FEATURE GRID */
+  .feat-cat{margin-bottom:56px;}
+  .feat-cat:last-child{margin-bottom:0;}
+  .feat-cat-title{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--marigold-deep);margin-bottom:20px;}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .feat-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px 20px;transition:border-color .2s ease, transform .2s ease;}
+  .feat-card:hover{border-color:var(--teal);transform:translateY(-3px);}
+  .feat-card .ic{width:40px;height:40px;border-radius:11px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin-bottom:14px;color:var(--teal);}
+  .feat-card h4{font-family:'Inter',sans-serif;font-weight:700;font-size:14.5px;color:var(--navy);margin-bottom:5px;}
+  .feat-card p{font-size:12.5px;color:var(--ink-soft);line-height:1.5;}
+  @media (max-width:860px){.feat-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.feat-grid{grid-template-columns:1fr;}}
+
+  /* HOW IT WORKS */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .step{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px 22px;}
+  .step .num{font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:var(--marigold-deep);margin-bottom:14px;}
+  .step h4{font-size:16px;margin-bottom:8px;}
+  .step p{font-size:14px;color:var(--ink-soft);line-height:1.55;}
+  @media (max-width:860px){.steps{grid-template-columns:1fr 1fr;}}
+  @media (max-width:560px){.steps{grid-template-columns:1fr;}}
+
+  /* COMPARISON */
+  .compare{background:var(--paper);}
+  .compare-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:18px;overflow:hidden;box-shadow:0 4px 24px -12px rgba(20,35,48,0.12);}
+  .compare-table th,.compare-table td{padding:16px 18px;text-align:left;font-size:14px;border-bottom:1px solid var(--line);}
+  .compare-table th{background:var(--navy);color:var(--white);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em;}
+  .compare-table td:not(:first-child){text-align:center;}
+  .compare-table tr:last-child td{border-bottom:none;}
+  .compare-table .yes{color:var(--teal);font-weight:800;}
+  .compare-table .no{color:var(--ink-soft);opacity:.5;}
+  .compare-table td:first-child{font-weight:600;color:var(--navy);}
+  .compare-table .hi{background:#FBF3E4;}
+
+  /* DEMO VIDEO */
+  .demo-wrap{max-width:760px;margin:0 auto;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(20,35,48,0.3);position:relative;}
+  .demo-wrap video{width:100%;display:block;}
+
+  /* STORY */
+  .story{background:var(--navy);color:#D8ECE5;}
+  .story .wrap{max-width:760px;}
+  .story .eyebrow{color:#BEE3D8;}
+  .story h2{color:var(--white);font-size:clamp(28px,3.6vw,40px);margin-bottom:26px;}
+  .story p{font-size:16px;line-height:1.75;margin-bottom:18px;color:#C7D6DA;}
+  .story .sign{color:var(--white);font-family:'Fraunces',serif;font-style:italic;font-size:18px;margin-top:8px;}
+
+  /* ROADMAP */
+  .roadmap{position:relative;padding-left:28px;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:34px;}
+  .rm-item{position:relative;}
+  .rm-item::before{content:'';position:absolute;left:-34px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--marigold);border:3px solid var(--white);box-shadow:0 0 0 2px var(--marigold);}
+  .rm-item.done::before{background:var(--teal);box-shadow:0 0 0 2px var(--teal);}
+  .rm-item .tag{font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+  .rm-item.done .tag{color:var(--teal);}
+  .rm-item h4{font-size:16.5px;margin-bottom:4px;}
+  .rm-item p{font-size:14px;color:var(--ink-soft);}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{width:100%;text-align:left;padding:22px 0;background:none;border:none;font-family:'Inter',sans-serif;font-weight:700;font-size:16px;color:var(--navy);display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+  .faq-q .plus{font-size:20px;color:var(--marigold-deep);transition:transform .25s ease;font-weight:400;}
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .faq-a p{padding-bottom:22px;font-size:14.5px;color:var(--ink-soft);line-height:1.6;max-width:640px;}
+
+  /* COUNTDOWN + COUNTER */
+  .stat-band{background:var(--teal);color:var(--white);}
+  .stat-band .wrap{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
+  .stat-band h2{color:var(--white);font-size:clamp(24px,3vw,32px);margin-bottom:10px;}
+  .stat-band p{color:#D8ECE5;font-size:15px;}
+  .countdown{display:flex;gap:14px;}
+  .cd-box{background:rgba(255,255,255,0.12);border-radius:14px;padding:16px 18px;text-align:center;min-width:76px;}
+  .cd-box .n{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--white);}
+  .cd-box .l{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#BEE3D8;margin-top:2px;}
+  .counter-row{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.1);border-radius:16px;padding:18px 22px;}
+  .counter-row .n{font-family:'Fraunces',serif;font-size:34px;font-weight:700;color:var(--white);}
+  .counter-row .t{font-size:13.5px;color:#D8ECE5;line-height:1.4;}
+  @media (max-width:860px){.stat-band .wrap{grid-template-columns:1fr;}.countdown{flex-wrap:wrap;}}
+
+  /* WAITLIST FORM */
+  .waitlist{background:var(--paper);}
+  .form-card{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:40px;max-width:520px;margin:0 auto;box-shadow:0 20px 50px -24px rgba(20,35,48,0.18);}
+  .form-card label{display:block;font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:7px;margin-top:18px;}
+  .form-card label:first-of-type{margin-top:0;}
+  .form-card input{width:100%;padding:13px 16px;border-radius:12px;border:1.5px solid var(--line);font-size:15px;font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);}
+  .form-card input:focus{outline:none;border-color:var(--teal);}
+  .check-row{display:flex;gap:10px;align-items:flex-start;margin-top:20px;font-size:13px;color:var(--ink-soft);line-height:1.5;}
+  .check-row input{width:auto;margin-top:2px;}
+  .check-row a{color:var(--teal);font-weight:700;text-decoration:underline;}
+  .submit-btn{width:100%;margin-top:24px;background:var(--teal);color:var(--white);border:none;padding:16px;border-radius:100px;font-weight:700;font-size:16px;cursor:pointer;transition:background .2s ease;}
+  .submit-btn:hover{background:var(--teal-light);}
+  .submit-btn:disabled{opacity:.6;cursor:default;}
+  .form-note{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:16px;}
+  .success-msg{display:none;text-align:center;padding:20px 0;}
+  .success-msg .ic{font-size:44px;margin-bottom:14px;}
+  .success-msg h3{margin-bottom:8px;}
+  .success-msg p{color:var(--ink-soft);font-size:14.5px;}
+
+  /* FOOTER */
+  footer{background:var(--navy);color:#AEBBC4;padding:56px 0 24px;}
+  .foot-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:28px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,0.1);}
+  .foot-brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-weight:700;font-size:20px;color:var(--white);}
+  .foot-links{display:flex;gap:26px;flex-wrap:wrap;font-size:14px;font-weight:600;}
+  .foot-links a:hover{color:var(--white);}
+  .foot-bottom{padding-top:22px;font-size:13px;color:#7E8E97;text-align:center;}
+  .privacy-strip{max-width:620px;margin:16px auto 0;text-align:center;font-size:12.5px;color:#7E8E97;line-height:1.6;}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,35,48,0.6);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal-box{background:var(--white);border-radius:20px;padding:32px;max-width:520px;max-height:80vh;overflow-y:auto;}
+  .modal-box h3{margin-bottom:16px;}
+  .modal-box p,.modal-box li{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;}
+  .modal-box ul{padding-left:18px;list-style:disc;}
+  .modal-close{float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink-soft);}
+
+  @media (max-width:860px){
+    .hero .wrap{grid-template-columns:1fr;}
+    .phone{order:-1;width:220px;}
+    section{padding:64px 0;}
+  }
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="ic-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"/><path d="M12 8.2v4"/><circle cx="12" cy="15.4" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="ic-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.6 4-2 1.3a11.5 11.5 0 0 0 5.1 5.1l1.3-2 4 1.6v3a2 2 0 0 1-2.1 2A16 16 0 0 1 4.5 5.6a2 2 0 0 1 2-2.1z"/></symbol>
+  <symbol id="ic-message" viewBox="0 0 24 24"><path d="M4 5h16v11H8.5L4.5 19.5V16H4V5z"/></symbol>
+  <symbol id="ic-alert" viewBox="0 0 24 24"><path d="M12 3 2.2 20h19.6L12 3z"/><line x1="12" y1="9" x2="12" y2="14"/><circle cx="12" cy="17" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="ic-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.7 7-12.3A7 7 0 1 0 5 8.7C5 14.3 12 21 12 21z"/><circle cx="12" cy="8.7" r="2.4"/></symbol>
+  <symbol id="ic-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15 20c0-2.6 1.8-4.7 4-5.3"/></symbol>
+  <symbol id="ic-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2.3" width="6" height="3" rx="1"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="13" y2="15"/></symbol>
+  <symbol id="ic-droplet" viewBox="0 0 24 24"><path d="M12 3s6.2 7.2 6.2 11.2a6.2 6.2 0 0 1-12.4 0C5.8 10.2 12 3 12 3z"/></symbol>
+  <symbol id="ic-folder" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3V6z"/></symbol>
+  <symbol id="ic-pill" viewBox="0 0 24 24"><rect x="2" y="9.3" width="20" height="6.4" rx="3.2" transform="rotate(-32 12 12)"/><line x1="12" y1="6.5" x2="12" y2="17.5" transform="rotate(-32 12 12)"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.2v5l3.3 2"/></symbol>
+  <symbol id="ic-camera" viewBox="0 0 24 24"><path d="M4 8h3.3l1.4-2h6.6L16.7 8H20v11H4V8z"/><circle cx="12" cy="13.5" r="3.1"/></symbol>
+  <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></symbol>
+  <symbol id="ic-calendar-check" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><path d="M8 14.2l2.4 2.4L16 11"/></symbol>
+  <symbol id="ic-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7.3" height="7.3" rx="1.4"/><rect x="13.2" y="3.5" width="7.3" height="7.3" rx="1.4"/><rect x="3.5" y="13.2" width="7.3" height="7.3" rx="1.4"/><rect x="13.2" y="13.2" width="7.3" height="7.3" rx="1.4"/></symbol>
+  <symbol id="ic-repeat" viewBox="0 0 24 24"><path d="M4.5 9a7 7 0 0 1 12-4.9L18 6"/><path d="M18 2.7V6.5h-4"/><path d="M19.5 15a7 7 0 0 1-12 4.9L6 18"/><path d="M6 21.3V17.5h4"/></symbol>
+  <symbol id="ic-user-plus" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><line x1="18" y1="7.5" x2="18" y2="13.5"/><line x1="15" y1="10.5" x2="21" y2="10.5"/></symbol>
+  <symbol id="ic-dashboard" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="8" height="10" rx="1.4"/><rect x="13" y="3.5" width="7.5" height="6" rx="1.4"/><rect x="13" y="11" width="7.5" height="9.5" rx="1.4"/><rect x="3.5" y="15" width="8" height="5.5" rx="1.4"/></symbol>
+  <symbol id="ic-cloud" viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.5-9A6 6 0 0 1 18 8a4 4 0 0 1-1 8H7z"/></symbol>
+  <symbol id="ic-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></symbol>
+  <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M6 10a6 6 0 0 1 12 0c0 4 1.5 5.5 1.5 5.5h-15S6 14 6 10z"/><path d="M10 19a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="ic-chart" viewBox="0 0 24 24"><line x1="4" y1="20" x2="20" y2="20"/><rect x="6" y="12" width="3" height="8"/><rect x="11" y="8" width="3" height="12"/><rect x="16" y="4" width="3" height="16"/></symbol>
+  <symbol id="ic-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><line x1="3.5" y1="12" x2="20.5" y2="12"/><path d="M12 3.5c2.5 2.3 4 5.3 4 8.5s-1.5 6.2-4 8.5c-2.5-2.3-4-5.3-4-8.5s1.5-6.2 4-8.5z"/></symbol>
+  <symbol id="ic-book" viewBox="0 0 24 24"><path d="M4 5.5A2 2 0 0 1 6 4h6v16H6a2 2 0 0 0-2 2v-16.5z"/><path d="M20 5.5A2 2 0 0 0 18 4h-6v16h6a2 2 0 0 1 2 2v-16.5z"/></symbol>
+</svg>
+
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><div class="brand-mark"><img src="logo.jpg" alt="MedAayu logo"></div>MedAayu</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#story">Our story</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#waitlist" class="nav-cta">Join waitlist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Made in India · Launching Soon</div>
+      <h1>Healthcare for your whole family, <em>watched over</em> even when you're not there.</h1>
+      <p class="lead">MedAayu keeps medicines, records, appointments and emergencies in one place — with AI-powered fall detection that alerts your family the moment it matters most.</p>
+      <div class="cta-row">
+        <a href="#waitlist" class="btn-primary">Join the waitlist</a>
+        <a href="#demo" class="btn-ghost">Watch demo ▸</a>
+      </div>
+      <div class="micro"><strong id="heroCount">—</strong> families already on the list — be among the first 100 to get early access.</div>
+      <div class="badge-row">
+        <div class="badge-pill"><span class="dot"></span>Secure by design</div>
+        <div class="badge-pill"><span class="dot"></span>Made in India</div>
+        <div class="badge-pill"><span class="dot"></span>Privacy first</div>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-notch"></div>
+          <div class="mock-greeting">Good morning</div>
+          <div class="mock-name">Priya's family</div>
+          <div class="mock-card">
+            <div class="row">
+              <div class="dotic teal"><svg class="icon" style="width:15px;height:15px;"><use href="#ic-pill"/></svg></div>
+              <div class="txt"><div class="t1">Metformin — 9:00 AM</div><div class="t2">Papa · taken on time</div></div>
+              <div class="check">✓</div>
+            </div>
+          </div>
+          <div class="mock-card">
+            <div class="row">
+              <div class="dotic marigold"><svg class="icon" style="width:15px;height:15px;"><use href="#ic-calendar"/></svg></div>
+              <div class="txt"><div class="t1">Cardiologist visit</div><div class="t2">Tomorrow · reminder set</div></div>
+            </div>
+          </div>
+          <div class="mock-alert">
+            <div class="row">
+              <div class="mock-pulse"></div>
+              <div class="txt"><div class="t1">Fall detected — Papa</div><div class="t2">Family alerted with location</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-float f1"><span class="dot"></span>Papa took his medicine ✓</div>
+      <div class="phone-float f2"><span class="dot"></span>Family notified in 2 sec</div>
+    </div>
+  </div>
+</section>
+
+<!-- STARRED FEATURES -->
+<section class="star-band">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">The heart of MedAayu</div>
+      <h2>Three features built for the moments that matter most</h2>
+      <p>Everything else in MedAayu supports daily health. These three exist for the day something goes wrong.</p>
+    </div>
+    <div class="star-grid">
+      <div class="star-card">
+        <div class="ic"><svg class="icon"><use href="#ic-shield"/></svg></div>
+        <h3>AI-Powered Fall Detection</h3>
+        <p>Motion sensing on a loved one's phone recognizes a serious fall, waits a few seconds for a response, then automatically alerts emergency contacts with live location — no manual SOS needed.</p>
+      </div>
+      <div class="star-card">
+        <div class="ic"><svg class="icon"><use href="#ic-phone"/></svg></div>
+        <h3>Call Reminders</h3>
+        <p>For elderly parents who don't check apps, MedAayu places an actual phone call at medicine time — a voice reminder that's impossible to miss or swipe away.</p>
+      </div>
+      <div class="star-card">
+        <div class="ic"><svg class="icon"><use href="#ic-message"/></svg></div>
+        <h3>WhatsApp Message Reminders</h3>
+        <p>Gentle nudges for medicines, appointments and check-ups delivered straight to WhatsApp — where your family already is, no new habit required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL FEATURE GRID -->
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Everything in one app</div>
+      <h2>Every part of your family's health, organized</h2>
+      <p>From daily medicines to emergency preparedness — MedAayu replaces a dozen scattered habits with one calm dashboard.</p>
+    </div>
+
+    <div class="feat-cat">
+      <div class="feat-cat-title">Safety &amp; emergency</div>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-alert"/></svg></div><h4>Emergency SOS</h4><p>One tap alerts every emergency contact with your exact situation.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-pin"/></svg></div><h4>Live GPS Location Sharing</h4><p>Family can see real-time location during an emergency, no guessing.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-users"/></svg></div><h4>Emergency Contacts</h4><p>A prioritized list that's notified automatically when it matters.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-clipboard"/></svg></div><h4>Emergency Medical Info Card</h4><p>Allergies, conditions and medications visible instantly to responders.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-droplet"/></svg></div><h4>Blood Group &amp; Medical ID Card</h4><p>A digital ID card paramedics can pull up in seconds.</p></div>
+      </div>
+    </div>
+
+    <div class="feat-cat">
+      <div class="feat-cat-title">Records &amp; medicines</div>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-folder"/></svg></div><h4>Digital Health Records</h4><p>Every report and file, stored securely and searchable in seconds.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-pill"/></svg></div><h4>Medicine Reminders</h4><p>Never miss a dose — timed reminders across call, WhatsApp and app.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-clipboard"/></svg></div><h4>Prescription Management</h4><p>Every prescription organized by doctor, date and condition.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-clock"/></svg></div><h4>Medical History Timeline</h4><p>A visual timeline of diagnoses, treatments and visits over the years.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-camera"/></svg></div><h4>Health Document Scanner (OCR)</h4><p>Snap a photo of any report — MedAayu reads and files it for you.</p></div>
+      </div>
+    </div>
+
+    <div class="feat-cat">
+      <div class="feat-cat-title">Appointments &amp; reminders</div>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-calendar"/></svg></div><h4>Appointment Reminders</h4><p>Add any appointment yourself — MedAayu reminds you and your family before it's time. We don't book on your behalf.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-grid"/></svg></div><h4>Personal Health Calendar</h4><p>Every appointment and test you've added, in one calendar view.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-repeat"/></svg></div><h4>Recurring Reminder Rules</h4><p>Set it once for ongoing medicines or regular check-ups; MedAayu repeats it automatically.</p></div>
+      </div>
+    </div>
+
+    <div class="feat-cat">
+      <div class="feat-cat-title">Family &amp; caregiving</div>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-users"/></svg></div><h4>Family Health Profiles</h4><p>A separate, complete health profile for every family member.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-user-plus"/></svg></div><h4>Family Member Management</h4><p>Add parents, kids or relatives and manage their care from one login.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-dashboard"/></svg></div><h4>Caregiver Dashboard</h4><p>One glance shows adherence, upcoming reminders and alerts for everyone you care for.</p></div>
+      </div>
+    </div>
+
+    <div class="feat-cat">
+      <div class="feat-cat-title">Smart, secure &amp; insightful</div>
+      <div class="feat-grid">
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-cloud"/></svg></div><h4>Cloud Backup &amp; Sync</h4><p>Your records stay safe and up to date across every device.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-lock"/></svg></div><h4>Secure Health Data Encryption</h4><p>End-to-end encryption keeps sensitive health data private, always.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-bell"/></svg></div><h4>Smart Health Notifications</h4><p>Notifications that learn your routine instead of spamming it.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-chart"/></svg></div><h4>Health Analytics Dashboard</h4><p>Trends across vitals, adherence and visits, visualized simply.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-chart"/></svg></div><h4>Health Reports &amp; Insights</h4><p>Plain-language summaries of what your family's health data means.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-globe"/></svg></div><h4>Multi-language Support</h4><p>Built for India — including Hindi and Marathi from day one.</p></div>
+        <div class="feat-card"><div class="ic"><svg class="icon"><use href="#ic-book"/></svg></div><h4>Health Tips &amp; Educational Content</h4><p>Bite-sized, trustworthy health guidance for everyday decisions.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" style="background:var(--paper);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Simple by design</div>
+      <h2>How MedAayu works</h2>
+      <p>Set up once. MedAayu quietly does the rest — until it needs to act fast.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><h4>Create family profiles</h4><p>Add each family member — their conditions, medicines and doctors.</p></div>
+      <div class="step"><div class="num">02</div><h4>Set reminders once</h4><p>Medicines and appointments — scheduled and forgotten about.</p></div>
+      <div class="step"><div class="num">03</div><h4>MedAayu watches quietly</h4><p>Call, WhatsApp and app reminders go out automatically, on time.</p></div>
+      <div class="step"><div class="num">04</div><h4>Family is alerted instantly</h4><p>A missed dose or a detected fall triggers an immediate alert with location.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE MEDAAYU -->
+<section class="compare">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why MedAayu</div>
+      <h2>Why families choose MedAayu over the old way</h2>
+    </div>
+    <table class="compare-table">
+      <tr><th>Capability</th><th>Paper &amp; memory</th><th>Generic reminder apps</th><th class="hi">MedAayu</th></tr>
+      <tr><td>Medicine reminders that reach elderly parents</td><td class="no">✕</td><td class="no">✕ App-only</td><td class="hi yes">✓ Call + WhatsApp</td></tr>
+      <tr><td>AI fall detection with auto-alert</td><td class="no">✕</td><td class="no">✕</td><td class="hi yes">✓</td></tr>
+      <tr><td>All family members' records in one place</td><td class="no">✕ Scattered</td><td class="no">✕ One profile only</td><td class="hi yes">✓</td></tr>
+      <tr><td>Live location during emergencies</td><td class="no">✕</td><td class="no">✕</td><td class="hi yes">✓</td></tr>
+      <tr><td>Built for Indian families &amp; languages</td><td class="no">—</td><td class="no">✕ Mostly Western</td><td class="hi yes">✓ Hindi, Marathi, English</td></tr>
+      <tr><td>One calendar for appointments, with reminders that reach you</td><td class="no">✕</td><td class="no">✕ Separate apps</td><td class="hi yes">✓</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- DEMO VIDEO -->
+<section id="demo">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">See it in action</div>
+      <h2>A quick look at MedAayu</h2>
+      <p>This is early product footage — the interface will keep evolving before launch.</p>
+    </div>
+    <div class="demo-wrap">
+      <video src="demo.mp4" autoplay muted loop playsinline controls></video>
+    </div>
+  </div>
+</section>
+
+<!-- STORY / MISSION -->
+<section class="story" id="story">
+  <div class="wrap">
+    <div class="eyebrow">The story behind MedAayu</div>
+    <h2>Better healthcare starts with better care</h2>
+    <p>Healthcare is one of the most important parts of our lives, yet managing it often feels unnecessarily complicated. Medical records are scattered across hospitals, prescriptions get misplaced, appointments are forgotten, and families struggle to stay informed about the health of their loved ones. In emergencies, every second matters — but critical information is rarely available when it's needed most.</p>
+    <p>MedAayu was born from a simple belief: healthcare should be organized, accessible, and there for you when you need it most.</p>
+    <p>Our vision is to create a single platform where individuals and families can securely manage their entire healthcare journey — from storing medical records and tracking medicines to keeping track of appointments and receiving timely health reminders. We believe technology should reduce stress, not add to it.</p>
+    <p>As we explored the challenges people face every day, one concern stood out: the safety of elderly family members and those living alone. That's why we're building AI-powered Fall Detection — designed to detect serious falls, notify emergency contacts, and share live location when every second counts. It's one step toward making healthcare more proactive, not just reactive.</p>
+    <p>At MedAayu, we're not just building another health app. We're building a trusted healthcare companion that puts people first — one that helps families stay connected, promotes healthier lives, and provides peace of mind through secure, intelligent technology.</p>
+    <p>This is only the beginning. With your support, we're creating a future where managing healthcare is simple, connected, and always within reach.</p>
+    <p class="sign">Welcome to MedAayu — because better healthcare starts with better care.</p>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section style="background:var(--paper);">
+  <div class="wrap">
+    <div class="section-head left" style="max-width:100%;">
+      <div class="eyebrow">Progress roadmap</div>
+      <h2>Where we are, and what's next</h2>
+    </div>
+    <div class="roadmap">
+      <div class="rm-item done"><div class="tag">Completed</div><h4>Product design &amp; architecture</h4><p>Core app experience and backend designed for family + caregiver use.</p></div>
+      <div class="rm-item done"><div class="tag">Completed</div><h4>Waitlist &amp; early access opened</h4><p>Families can now reserve a spot for priority onboarding.</p></div>
+      <div class="rm-item"><div class="tag">In progress</div><h4>Fall detection &amp; reminder engine</h4><p>Building and testing AI fall detection and call/WhatsApp reminder flows.</p></div>
+      <div class="rm-item"><div class="tag">Next</div><h4>Private beta</h4><p>First 100 waitlist families get early access to test and shape the app.</p></div>
+      <div class="rm-item"><div class="tag">Upcoming</div><h4>Public launch</h4><p>MedAayu opens up on Android, with iOS to follow.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap" style="max-width:760px;">
+    <div class="section-head">
+      <div class="eyebrow">Questions</div>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">When does MedAayu launch? <span class="plus">+</span></button>
+        <div class="faq-a"><p>We're in active development. Waitlist members get priority access to the private beta before the public launch — join now to be notified first.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Is my family's health data safe? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes. All health data is encrypted end-to-end, and we never sell or share your information with third parties. Security and privacy are built into MedAayu from day one.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How does fall detection work? <span class="plus">+</span></button>
+        <div class="faq-a"><p>MedAayu uses on-device motion sensing to recognize the pattern of a serious fall. If there's no response within a short window, it automatically notifies emergency contacts with live location.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do elderly parents need to use the app themselves? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Not necessarily. Call reminders and WhatsApp nudges are designed to reach them without needing to open an app — a caregiver can manage everything from their own dashboard.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Which languages will MedAayu support? <span class="plus">+</span></button>
+        <div class="faq-a"><p>MedAayu is being built with Hindi, Marathi and English support from the start, with more Indian languages planned after launch.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Will MedAayu be free? <span class="plus">+</span></button>
+        <div class="faq-a"><p>Core features will be free to use. Optional premium features may be introduced later — waitlist members will always get early-bird pricing.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN + COUNTER -->
+<section class="stat-band">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow" style="color:#BEE3D8;">Launching soon</div>
+      <h2>The countdown has begun</h2>
+      <p>Join now to secure priority access before we open the doors.</p>
+      <div class="countdown" id="countdown" style="margin-top:22px;">
+        <div class="cd-box"><div class="n" id="cd-days">--</div><div class="l">Days</div></div>
+        <div class="cd-box"><div class="n" id="cd-hours">--</div><div class="l">Hours</div></div>
+        <div class="cd-box"><div class="n" id="cd-mins">--</div><div class="l">Mins</div></div>
+        <div class="cd-box"><div class="n" id="cd-secs">--</div><div class="l">Secs</div></div>
+      </div>
+    </div>
+    <div class="counter-row">
+      <div class="n" id="statCount">—</div>
+      <div class="t">families have already joined the waitlist.<br>Be among the first 100 to get early access.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST FORM -->
+<section class="waitlist" id="waitlist">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Join the waitlist</div>
+      <h2>Be among the first 100 families</h2>
+      <p>MedAayu launches in a few weeks. Join now to get early access and help shape the app before it goes live.</p>
+    </div>
+    <div class="form-card">
+      <form id="waitlistForm">
+        <label for="name">Your name</label>
+        <input type="text" id="name" required>
+        <label for="phone">WhatsApp / phone number</label>
+        <input type="tel" id="phone" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+        <div class="check-row">
+          <input type="checkbox" id="terms">
+          <span>I agree to the <a href="#" id="termsLink">Terms &amp; Conditions</a> and consent to be contacted via WhatsApp/Email about MedAayu's launch.</span>
+        </div>
+        <button type="submit" class="submit-btn">Join the waitlist</button>
+      </form>
+      <div class="success-msg" id="successMsg">
+        <div class="ic">🎉</div>
+        <h3>You're on the list!</h3>
+        <p>Check your inbox for a confirmation email. We'll be in touch the moment MedAayu goes live.</p>
+      </div>
+      <div class="form-note">No spam — just a message when MedAayu goes live.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand"><div class="brand-mark"><img src="logo.jpg" alt="MedAayu logo"></div>MedAayu</div>
+      <div class="foot-links">
+        <a href="#waitlist">Join waitlist</a>
+        <a href="mailto:hello@medaayu.in">Contact &amp; Support</a>
+        <a href="#" id="footTermsLink">Privacy &amp; Security</a>
+        <a href="https://www.instagram.com/medaayu.in" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/share/1B4imLVgHk/" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </div>
+    <div class="privacy-strip">Your health data is encrypted end-to-end and never sold or shared with third parties. MedAayu is built and hosted with security-first practices from day one.</div>
+    <div class="foot-bottom">© 2026 MedAayu · Rivasa Technologies. Made in India, for Indian families.</div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="termsModal">
+  <div class="modal-box">
+    <button class="modal-close" id="closeTerms">✕</button>
+    <h3>Terms &amp; Conditions</h3>
+    <p><strong>Waitlist &amp; Pre-Launch</strong> — By joining the MedAayu waitlist, you agree to the following:</p>
+    <ul>
+      <li>MedAayu is currently in development and not yet publicly available. Joining the waitlist does not guarantee immediate access on launch, but registered users will be prioritized.</li>
+      <li>The information you provide (name, phone/WhatsApp number, email) will be used solely to notify you about MedAayu's launch, product updates, and early-access invitations.</li>
+      <li>We will not sell or share your contact details with third parties for marketing purposes.</li>
+      <li>You may request removal from the waitlist at any time by emailing medaayu07@gmail.com.</li>
+      <li>Launch timelines are estimates and may change. MedAayu is not liable for delays in the app's release.</li>
+      <li>Once live, use of the MedAayu app will be subject to a separate Terms of Service and Privacy Policy, which will be provided at sign-up.</li>
+    </ul>
+    <p>By checking the box, you confirm you have read and understood the above.</p>
+  </div>
+</div>
+
+<script>
+const WAITLIST_ENDPOINT = '/api/submit-waitlist';
+
+document.getElementById('termsLink').addEventListener('click', function(e){e.preventDefault();document.getElementById('termsModal').classList.add('open');});
+document.getElementById('footTermsLink').addEventListener('click', function(e){e.preventDefault();document.getElementById('termsModal').classList.add('open');});
+document.getElementById('closeTerms').addEventListener('click', function(){document.getElementById('termsModal').classList.remove('open');});
+document.getElementById('termsModal').addEventListener('click', function(e){if(e.target === this) this.classList.remove('open');});
+
+document.getElementById('waitlistForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const form = this;
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const termsAccepted = document.getElementById('terms').checked;
+  if(!name || !phone || !email) return;
+  if(!termsAccepted){ alert('Please accept the Terms & Conditions to join the waitlist.'); return; }
+
+  const submitBtn = form.querySelector('.submit-btn');
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = 'Joining...';
+  submitBtn.disabled = true;
+
+  fetch(WAITLIST_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: name, phone: phone, email: email })
+  })
+  .then(function(res){ if(!res.ok) throw new Error('Request failed'); return res.json(); })
+  .then(function(){ form.style.display = 'none'; document.getElementById('successMsg').style.display = 'block'; })
+  .catch(function(){ submitBtn.textContent = originalText; submitBtn.disabled = false; alert('Something went wrong. Please try again.'); });
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(function(item){
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', function(){
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); i.querySelector('.faq-a').style.maxHeight = null; });
+    if(!isOpen){ item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+  });
+});
+
+// Countdown timer — set your real launch date here (YYYY, MonthIndex(0-11), Day)
+const launchDate = new Date(2026, 7, 6, 0, 0, 0); // Aug 6, 2026
+function updateCountdown(){
+  const now = new Date();
+  let diff = launchDate - now;
+  if(diff < 0) diff = 0;
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const mins = Math.floor((diff / (1000*60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+  document.getElementById('cd-days').textContent = String(days).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(hours).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(mins).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(secs).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Live waitlist counter, pulled from Supabase via /api/waitlist-count
+fetch('/api/waitlist-count')
+  .then(function(res){ return res.json(); })
+  .then(function(data){
+    const n = (data && data.ok && typeof data.count === 'number') ? data.count : null;
+    const display = n !== null ? n : '100+'; // fallback if the endpoint isn't set up yet
+    document.getElementById('heroCount').textContent = display + (n !== null ? ' families' : ' families');
+    document.getElementById('statCount').textContent = display;
+  })
+  .catch(function(){
+    document.getElementById('heroCount').textContent = '100+ families';
+    document.getElementById('statCount').textContent = '100+';
+  });
+</script>
+
+</body>
+</html>
